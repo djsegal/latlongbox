@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="pt-5">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css" type="text/css">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .pac-logo:after {
+        background: none !important;
+        padding: 0 !important;
+        height: 0 !important;
+      }
+    </style>
+
+    <style>
+      a[href^="https://maps.google.com/maps"]{display:none !important}
+
+      .gmnoprint.gm-bundled-control-on-bottom {
+        top: 0 !important;
+      }
+
+      .gmnoprint a, .gmnoprint span, .gm-style-cc {
+          display:none;
+      }
+
+      .pac-container {
+        z-index: 10000;
+      }
+
+      .pac-container:last-child {
+        position:fixed;
+        display:block;
+        margin-top: -210px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+
+    <title>Hello, world!</title>
+  </head>
+  <body class="pt-5">
+
+    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+      <a class="navbar-brand" href="">▶&nbsp; Lat · Long · Box </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="form-inline ml-auto my-2 my-lg-0 d-sm-none">
+          <input class="form-control mr-sm-2" id="js-search-top" type="search" placeholder="Enter Location" aria-label="Search">
+        </form>
+      </div>
+      <span class="ml-auto my-2 my-lg-0 d-none d-sm-block js-ne">
+        (<span class="lat">-</span>, <span class="lng">-</span>)
+      </span>
+    </nav>
+
+    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-bottom d-none d-sm-inline-flex">
+      <span class="js-sw">(<span class="lat">-</span>, <span class="lng">-</span>)</span>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="form-inline ml-auto my-2 my-lg-0">
+          <input class="form-control mr-sm-2" id="js-search-bot" type="search" placeholder="Enter Location" aria-label="Search">
+        </form>
+      </div>
+    </nav>
+
+    <div class="container jumbotron p-5 mb-0">
+      <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+      <div id="map" class="card"></div>
+      <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+    </div>
+
+    <div id="sizer">
+        <div class="d-block d-sm-none d-md-none d-lg-none d-xl-none" data-size="xs"></div>
+        <div class="d-none d-sm-block d-md-none d-lg-none d-xl-none" data-size="sm"></div>
+        <div class="d-none d-sm-none d-md-block d-lg-none d-xl-none" data-size="md"></div>
+        <div class="d-none d-sm-none d-md-none d-lg-block d-xl-none" data-size="lg"></div>
+        <div class="d-none d-sm-none d-md-none d-lg-none d-xl-block" data-size="xl"></div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script>
+      var rectangle;
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 40.6992, lng: -73.9716},
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        });
+
+        // Create the DIV to hold the control and call the CenterControl()
+        // constructor passing in this DIV.
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(centerControlDiv);
+
+        var selectFirstOnEnter = function(input){
+            // store the original event binding function
+            var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+
+            // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected, and then trigger the original listener.
+            function addEventListenerWrapper(type, listener) {
+            if (type == "keydown") {
+              var orig_listener = listener;
+              listener = function (event) {
+              var suggestion_selected = $(".pac-item-selected").length > 0;
+                if (event.which == 13 && !suggestion_selected) {
+                  var simulated_downarrow = $.Event("keydown", { keyCode:40, which:40 });
+                  orig_listener.apply(input, [simulated_downarrow]);
+                }
+                orig_listener.apply(input, [event]);
+              };
+            }
+            // add the modified listener
+            _addEventListener.apply(input, [type, listener]);
+          }
+          if (input.addEventListener) {
+            input.addEventListener = addEventListenerWrapper;
+          } else if (input.attachEvent) {
+            input.attachEvent = addEventListenerWrapper;
+          }
+        }
+
+        var searchTop = document.getElementById('js-search-top');
+        selectFirstOnEnter(searchTop);
+        var autocomplete = new google.maps.places.Autocomplete(searchTop);
+
+        var searchBot = document.getElementById('js-search-bot');
+        selectFirstOnEnter(searchBot);
+        var autocomplete = new google.maps.places.Autocomplete(searchBot);
+
+        var rectangle = new google.maps.Rectangle({
+          editable: true,
+          visible: true,
+          draggable: true,
+          strokeColor: '#0000FF',
+          strokeOpacity: 0.4,
+          strokeWeight: 2,
+          fillColor: '#0000FF',
+          fillOpacity: 0.125,
+        });
+
+        rectangle.setMap(map);
+
+        function CenterControl(controlDiv, map) {
+          // Set CSS for the control border.
+          var controlUI = document.createElement('div');
+          controlUI.style.backgroundColor = '#fff';
+          controlUI.style.border = '2px solid #fff';
+          controlUI.style.borderRadius = '3px';
+          controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+          controlUI.style.cursor = 'pointer';
+          controlUI.style.marginBottom = '12px';
+          controlUI.style.textAlign = 'center';
+          controlUI.title = 'Toggle Box';
+          controlUI.id = "js-toggle";
+          controlDiv.appendChild(controlUI);
+
+          // Set CSS for the control interior.
+          var controlText = document.createElement('div');
+          controlText.style.color = 'rgb(25,25,25)';
+          controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+          controlText.style.fontSize = '16px';
+          controlText.style.lineHeight = '38px';
+          controlText.style.paddingLeft = '7px';
+          controlText.style.paddingRight = '7px';
+          controlText.innerHTML = 'Show Box';
+          controlUI.appendChild(controlText);
+
+          // Setup the click event listeners: simply set the map to Chicago.
+          controlUI.addEventListener('click', function() {
+            if ( rectangle.getBounds() !== undefined ) {
+              if ( $("#js-toggle div").text() === 'Show Box' ) {
+                rectangle.setVisible(true)
+                $("#js-toggle div").text('Hide Box');
+                _customUpdateBounds(rectangle);
+              } else {
+                rectangle.setVisible(false)
+                $("#js-toggle div").text('Show Box');
+                _customUpdateBounds(map);
+
+                google.maps.event.trigger(map, 'bounds_changed');
+              }
+              return;
+
+            }
+
+            var bounds = map.getBounds();
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+
+            var total_lat = ne.lat() - sw.lat(),
+                total_lon = ne.lng() - sw.lng();
+
+            var bounds = new google.maps.LatLngBounds();
+            myLatLng1 = new google.maps.LatLng({lat: ne.lat()-0.3*total_lat, lng: ne.lng()-0.15*total_lon});
+            myLatLng2 = new google.maps.LatLng({lat: sw.lat()+0.15*total_lat, lng: sw.lng()+0.3*total_lon});
+
+            bounds.extend(myLatLng1);
+            bounds.extend(myLatLng2);
+
+            rectangle.setBounds(bounds);
+            $("#js-toggle div").text('Hide Box');
+          });
+        }
+
+        function _customUpdateBounds(curObj) {
+          var bounds = curObj.getBounds();
+          var ne = bounds.getNorthEast();
+          var sw = bounds.getSouthWest();
+
+          var total_lat = Math.abs( ne.lat() - sw.lat() ),
+              total_lon = Math.abs( ne.lng() - sw.lng() );
+
+          var fixed_lat = Math.max(2, -1 * (Math.floor(Math.log10(total_lat))-2)),
+              fixed_lon = Math.max(2, -1 * (Math.floor(Math.log10(total_lon))-2));
+
+          $(".js-ne .lng").text(ne.lng().toFixed(fixed_lon));
+          $(".js-ne .lat").text(ne.lat().toFixed(fixed_lat));
+
+          $(".js-sw .lng").text(sw.lng().toFixed(fixed_lon));
+          $(".js-sw .lat").text(sw.lat().toFixed(fixed_lat));
+        }
+
+        google.maps.event.addListener(rectangle, 'bounds_changed', function() {
+          _customUpdateBounds(rectangle);
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                return;
+            }
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(15);
+            }
+
+            rectangle.setBounds(place.geometry.viewport);
+            rectangle.setVisible(true);
+            $("#js-toggle div").text('Hide Box');
+        });
+
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+          if ( $("#js-toggle div").text() === 'Hide Box' ) { return; }
+          _customUpdateBounds(map)
+        });
+      }
+    </script>
+
+
+    <script>
+      $('form').submit(function(e){
+          e.preventDefault();
+      });
+
+      $('#js-search-top').keyup(function (){
+          $('#js-search-bot').val($(this).val()); // <-- reverse your selectors here
+      });
+      $('#js-search-bot').keyup(function (){
+          $('#js-search-top').val($(this).val()); // <-- and here
+      });
+
+      $(document).ready(myfunction);
+      $(window).on('resize',myfunction);
+
+      function myfunction() {
+        if ( viewSize() == "xs" ) {
+          var jumboShrinkage = 2 * $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight() ;
+        } else {
+          var jumboShrinkage = 2 * ( $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight() ) ;
+          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-top").outerHeight();
+          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-bottom").outerHeight();
+        }
+
+        $(".jumbotron").height(
+          "calc(100vh - " + jumboShrinkage + "px)"
+        );
+
+        $("#map").height(
+          "calc(100% - " + 2 * $(".js-lat-long").outerHeight() + "px)"
+        );
+
+      }
+
+      function viewSize() {
+          return $('#sizer').find('div:visible').data('size');
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCR8H32g_VhI6inHswabgSFSC32-E3bP0Y&callback=initMap&libraries=places" async defer></script>
+  </body>
+</html>
