@@ -80,7 +80,7 @@
       </div>
     </nav>
 
-    <div class="container jumbotron p-5 mb-0">
+    <div class="container jumbotron py-xs-4 py-sm-5 py-md-5 py-lg-5 py-xl-5 px-5 mb-0">
       <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
       <div id="map" class="card"></div>
       <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
@@ -299,26 +299,34 @@
           $('#js-search-top').val($(this).val()); // <-- and here
       });
 
-      $(document).ready(myfunction);
-      $(window).on('resize',myfunction);
+      $(window).on('resize', myfunction);
+      $(document).ready(function() {
+        $(window).trigger('resize');
+      });
 
       function myfunction() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+
         if ( viewSize() == "xs" ) {
-          var jumboShrinkage = 2 * $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight() ;
+          var jumboShrinkage = 2 * $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight(true) ;
         } else {
-          var jumboShrinkage = 2 * ( $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight() ) ;
-          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-top").outerHeight();
-          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-bottom").outerHeight();
+          var jumboShrinkage = 2 * ( $(".jumbotron").offset()["top"] - $(".navbar.fixed-top").outerHeight(true) ) ;
+          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-top").outerHeight(true);
+          jumboShrinkage = jumboShrinkage + $(".navbar.fixed-bottom").outerHeight(true);
         }
 
         $(".jumbotron").height(
           "calc(100vh - " + jumboShrinkage + "px)"
         );
 
-        $("#map").height(
-          "calc(100% - " + 2 * $(".js-lat-long").outerHeight() + "px)"
-        );
-
+        if ( viewSize() == "xs" ) {
+          $("#map").height(
+            "calc(100% - " + 2 * $(".js-lat-long").outerHeight(true) + "px)"
+          );
+        } else {
+          $("#map").height("100%");
+        }
       }
 
       function viewSize() {
