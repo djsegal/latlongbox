@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html class="pt-5" lang="en">
+  <head class="">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -27,10 +27,6 @@
         background: none !important;
         padding: 0 !important;
         height: 0 !important;
-      }
-      .app-container {
-        height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-        height: calc(var(--vh, 1vh) * 100);
       }
     </style>
 
@@ -59,49 +55,45 @@
 
     <title>Lat · Long · Box</title>
   </head>
-  <body>
-    <div class="app-container mt-5">
-      <div class="app pt-5">
-        <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
-          <a class="navbar-brand" href="">▶&nbsp; Lat · Long · Box </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline ml-auto my-2 my-lg-0 d-sm-none">
-              <input class="form-control mr-sm-2" id="js-search-top" type="search" placeholder="Enter Location" aria-label="Search">
-            </form>
-          </div>
-          <span class="ml-auto my-2 my-lg-0 d-none d-sm-block js-ne">
-            (<span class="lat">-</span>, <span class="lng">-</span>)
-          </span>
-        </nav>
-
-        <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-bottom d-none d-sm-inline-flex">
-          <span class="js-sw">(<span class="lat">-</span>, <span class="lng">-</span>)</span>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="form-inline ml-auto my-2 my-lg-0">
-              <input class="form-control mr-sm-2" id="js-search-bot" type="search" placeholder="Enter Location" aria-label="Search">
-            </form>
-          </div>
-        </nav>
-
-        <div class="container jumbotron py-xs-4 py-sm-5 py-md-5 py-lg-5 py-xl-5 px-5 mb-0">
-          <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
-          <div id="map" class="card"></div>
-          <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+  <body class="pt-5">
+      <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="">▶&nbsp; Lat · Long · Box </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="form-inline ml-auto my-2 my-lg-0 d-sm-none">
+            <input class="form-control mr-sm-2" id="js-search-top" type="search" placeholder="Enter Location" aria-label="Search">
+          </form>
         </div>
+        <span class="ml-auto my-2 my-lg-0 d-none d-sm-block js-ne">
+          (<span class="lat">-</span>, <span class="lng">-</span>)
+        </span>
+      </nav>
 
-        <div id="sizer">
-            <div class="d-block d-sm-none d-md-none d-lg-none d-xl-none" data-size="xs"></div>
-            <div class="d-none d-sm-block d-md-none d-lg-none d-xl-none" data-size="sm"></div>
-            <div class="d-none d-sm-none d-md-block d-lg-none d-xl-none" data-size="md"></div>
-            <div class="d-none d-sm-none d-md-none d-lg-block d-xl-none" data-size="lg"></div>
-            <div class="d-none d-sm-none d-md-none d-lg-none d-xl-block" data-size="xl"></div>
+      <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-bottom d-none d-sm-inline-flex">
+        <span class="js-sw">(<span class="lat">-</span>, <span class="lng">-</span>)</span>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="form-inline ml-auto my-2 my-lg-0">
+            <input class="form-control mr-sm-2" id="js-search-bot" type="search" placeholder="Enter Location" aria-label="Search">
+          </form>
         </div>
+      </nav>
+
+      <div class="container jumbotron py-xs-4 py-sm-5 py-md-5 py-lg-5 py-xl-5 px-5 mb-0">
+        <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+        <div id="map" class="card"></div>
+        <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+      </div>
+
+      <div id="sizer">
+          <div class="d-block d-sm-none d-md-none d-lg-none d-xl-none" data-size="xs"></div>
+          <div class="d-none d-sm-block d-md-none d-lg-none d-xl-none" data-size="sm"></div>
+          <div class="d-none d-sm-none d-md-block d-lg-none d-xl-none" data-size="md"></div>
+          <div class="d-none d-sm-none d-md-none d-lg-block d-xl-none" data-size="lg"></div>
+          <div class="d-none d-sm-none d-md-none d-lg-none d-xl-block" data-size="xl"></div>
       </div>
     </div>
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -189,6 +181,7 @@
             _customAutocomplete(autocompleteBot.getPlace());
         });
 
+        $("#js-search-bot:visible").focus();
         // var autocomplete = new google.maps.places.Autocomplete(searchBot);
 
         var rectangle = new google.maps.Rectangle({
@@ -196,10 +189,10 @@
           visible: true,
           draggable: true,
           strokeColor: '#0000FF',
-          strokeOpacity: 0.4,
+          strokeOpacity: 0.25,
           strokeWeight: 2,
           fillColor: '#0000FF',
-          fillOpacity: 0.125,
+          fillOpacity: 0.075,
         });
 
         rectangle.setMap(map);
@@ -226,43 +219,23 @@
           controlText.style.lineHeight = '38px';
           controlText.style.paddingLeft = '7px';
           controlText.style.paddingRight = '7px';
-          controlText.innerHTML = 'Show Box';
+          controlText.innerHTML = 'Hide Box';
           controlUI.appendChild(controlText);
 
           // Setup the click event listeners: simply set the map to Chicago.
           controlUI.addEventListener('click', function() {
-            if ( rectangle.getBounds() !== undefined ) {
-              if ( $("#js-toggle div").text() === 'Show Box' ) {
-                rectangle.setVisible(true)
-                $("#js-toggle div").text('Hide Box');
-                _customUpdateBounds(rectangle);
-              } else {
-                rectangle.setVisible(false)
-                $("#js-toggle div").text('Show Box');
-                _customUpdateBounds(map);
+            if ( $("#js-toggle div").text() === 'Show Box' ) {
+              rectangle.setVisible(true)
+              $("#js-toggle div").text('Hide Box');
+              _customUpdateBounds(rectangle);
+            } else {
+              rectangle.setVisible(false)
+              $("#js-toggle div").text('Show Box');
+              _customUpdateBounds(map);
 
-                google.maps.event.trigger(map, 'bounds_changed');
-              }
-              return;
-
+              google.maps.event.trigger(map, 'bounds_changed');
             }
-
-            var bounds = map.getBounds();
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
-
-            var total_lat = ne.lat() - sw.lat(),
-                total_lon = ne.lng() - sw.lng();
-
-            var bounds = new google.maps.LatLngBounds();
-            myLatLng1 = new google.maps.LatLng({lat: ne.lat()-0.3*total_lat, lng: ne.lng()-0.15*total_lon});
-            myLatLng2 = new google.maps.LatLng({lat: sw.lat()+0.15*total_lat, lng: sw.lng()+0.3*total_lon});
-
-            bounds.extend(myLatLng1);
-            bounds.extend(myLatLng2);
-
-            rectangle.setBounds(bounds);
-            $("#js-toggle div").text('Hide Box');
+            return;
           });
         }
 
@@ -291,6 +264,26 @@
         google.maps.event.addListener(map, 'bounds_changed', function() {
           if ( $("#js-toggle div").text() === 'Hide Box' ) { return; }
           _customUpdateBounds(map)
+        });
+
+        google.maps.event.addListenerOnce(map,'bounds_changed', function() {
+
+          var bounds = map.getBounds();
+          var ne = bounds.getNorthEast();
+          var sw = bounds.getSouthWest();
+
+          var total_lat = ne.lat() - sw.lat(),
+              total_lon = ne.lng() - sw.lng();
+
+          var bounds = new google.maps.LatLngBounds();
+          myLatLng1 = new google.maps.LatLng({lat: ne.lat()-0.3*total_lat, lng: ne.lng()-0.15*total_lon});
+          myLatLng2 = new google.maps.LatLng({lat: sw.lat()+0.15*total_lat, lng: sw.lng()+0.3*total_lon});
+
+          bounds.extend(myLatLng1);
+          bounds.extend(myLatLng2);
+
+          rectangle.setBounds(bounds);
+
         });
       }
     </script>
@@ -337,18 +330,6 @@
       function viewSize() {
           return $('#sizer').find('div:visible').data('size');
       }
-
-      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-      let vh = window.innerHeight * 0.01;
-      // Then we set the value in the --vh custom property to the root of the document
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-      // We listen to the resize event
-      window.addEventListener('resize', () => {
-        // We execute the same script as before
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      });
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCR8H32g_VhI6inHswabgSFSC32-E3bP0Y&callback=initMap&libraries=places" async defer></script>
