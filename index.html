@@ -52,7 +52,7 @@
     </style>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
 
-    <title>Hello, world!</title>
+    <title>Lat · Long · Box</title>
   </head>
   <body class="pt-5">
 
@@ -148,12 +148,39 @@
         }
 
         var searchTop = document.getElementById('js-search-top');
-        selectFirstOnEnter(searchTop);
-        var autocomplete = new google.maps.places.Autocomplete(searchTop);
-
         var searchBot = document.getElementById('js-search-bot');
+        selectFirstOnEnter(searchTop);
         selectFirstOnEnter(searchBot);
-        var autocomplete = new google.maps.places.Autocomplete(searchBot);
+        var autocompleteTop = new google.maps.places.Autocomplete(searchTop);
+        var autocompleteBot = new google.maps.places.Autocomplete(searchBot);
+        autocompleteTop.inputId = searchTop.id;
+        autocompleteBot.inputId = searchBot.id;
+
+        function _customAutocomplete(place) {
+          if (!place.geometry) {
+              return;
+          }
+          if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+          } else {
+              map.setCenter(place.geometry.location);
+              map.setZoom(15);
+          }
+
+          rectangle.setBounds(place.geometry.viewport);
+          rectangle.setVisible(true);
+          $("#js-toggle div").text('Hide Box');
+        }
+
+          google.maps.event.addListener(autocompleteTop, 'place_changed', function() {
+            _customAutocomplete(autocompleteTop.getPlace());
+        });
+
+        google.maps.event.addListener(autocompleteBot, 'place_changed', function() {
+            _customAutocomplete(autocompleteBot.getPlace());
+        });
+
+        // var autocomplete = new google.maps.places.Autocomplete(searchBot);
 
         var rectangle = new google.maps.Rectangle({
           editable: true,
@@ -250,23 +277,6 @@
 
         google.maps.event.addListener(rectangle, 'bounds_changed', function() {
           _customUpdateBounds(rectangle);
-        });
-
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            var place = autocomplete.getPlace();
-            if (!place.geometry) {
-                return;
-            }
-            if (place.geometry.viewport) {
-                map.fitBounds(place.geometry.viewport);
-            } else {
-                map.setCenter(place.geometry.location);
-                map.setZoom(15);
-            }
-
-            rectangle.setBounds(place.geometry.viewport);
-            rectangle.setVisible(true);
-            $("#js-toggle div").text('Hide Box');
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function() {
