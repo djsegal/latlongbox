@@ -50,48 +50,57 @@
         margin-top: -210px;
       }
     </style>
+    <style>
+      .my-element {
+        height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+        height: calc(var(--vh, 1vh) * 100);
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
 
     <title>Lat · Long · Box</title>
   </head>
   <body class="pt-5">
+    <div class="my-element">
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
-      <a class="navbar-brand" href="">▶&nbsp; Lat · Long · Box </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline ml-auto my-2 my-lg-0 d-sm-none">
-          <input class="form-control mr-sm-2" id="js-search-top" type="search" placeholder="Enter Location" aria-label="Search">
-        </form>
+      <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="">▶&nbsp; Lat · Long · Box </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="form-inline ml-auto my-2 my-lg-0 d-sm-none">
+            <input class="form-control mr-sm-2" id="js-search-top" type="search" placeholder="Enter Location" aria-label="Search">
+          </form>
+        </div>
+        <span class="ml-auto my-2 my-lg-0 d-none d-sm-block js-ne">
+          (<span class="lat">-</span>, <span class="lng">-</span>)
+        </span>
+      </nav>
+
+      <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-bottom d-none d-sm-inline-flex">
+        <span class="js-sw">(<span class="lat">-</span>, <span class="lng">-</span>)</span>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="form-inline ml-auto my-2 my-lg-0">
+            <input class="form-control mr-sm-2" id="js-search-bot" type="search" placeholder="Enter Location" aria-label="Search">
+          </form>
+        </div>
+      </nav>
+
+      <div class="container jumbotron py-xs-4 py-sm-5 py-md-5 py-lg-5 py-xl-5 px-5 mb-0">
+        <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
+        <div id="map" class="card"></div>
+        <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
       </div>
-      <span class="ml-auto my-2 my-lg-0 d-none d-sm-block js-ne">
-        (<span class="lat">-</span>, <span class="lng">-</span>)
-      </span>
-    </nav>
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-bottom d-none d-sm-inline-flex">
-      <span class="js-sw">(<span class="lat">-</span>, <span class="lng">-</span>)</span>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline ml-auto my-2 my-lg-0">
-          <input class="form-control mr-sm-2" id="js-search-bot" type="search" placeholder="Enter Location" aria-label="Search">
-        </form>
+      <div id="sizer">
+          <div class="d-block d-sm-none d-md-none d-lg-none d-xl-none" data-size="xs"></div>
+          <div class="d-none d-sm-block d-md-none d-lg-none d-xl-none" data-size="sm"></div>
+          <div class="d-none d-sm-none d-md-block d-lg-none d-xl-none" data-size="md"></div>
+          <div class="d-none d-sm-none d-md-none d-lg-block d-xl-none" data-size="lg"></div>
+          <div class="d-none d-sm-none d-md-none d-lg-none d-xl-block" data-size="xl"></div>
       </div>
-    </nav>
 
-    <div class="container jumbotron py-xs-4 py-sm-5 py-md-5 py-lg-5 py-xl-5 px-5 mb-0">
-      <div style="text-align: right;" class="js-ne d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
-      <div id="map" class="card"></div>
-      <div class="js-sw d-block d-sm-none js-lat-long py-2 my-1">(<span class="lat">-</span>, <span class="lng">-</span>)</div>
-    </div>
-
-    <div id="sizer">
-        <div class="d-block d-sm-none d-md-none d-lg-none d-xl-none" data-size="xs"></div>
-        <div class="d-none d-sm-block d-md-none d-lg-none d-xl-none" data-size="sm"></div>
-        <div class="d-none d-sm-none d-md-block d-lg-none d-xl-none" data-size="md"></div>
-        <div class="d-none d-sm-none d-md-none d-lg-block d-xl-none" data-size="lg"></div>
-        <div class="d-none d-sm-none d-md-none d-lg-none d-xl-block" data-size="xl"></div>
     </div>
 
     <!-- Optional JavaScript -->
