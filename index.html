@@ -18,8 +18,8 @@
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
-        height: 100%; /* Fallback for browsers that do not support Custom Properties */
-        height: calc(var(--vh, 1vh) * 100);
+        height: 100%;
+        width: 100%;
         margin: 0;
         padding: 0;
       }
@@ -49,12 +49,6 @@
         position:fixed;
         display:block;
         margin-top: -210px;
-      }
-    </style>
-    <style>
-      .my-element {
-        height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-        height: calc(var(--vh, 1vh) * 100);
       }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
@@ -306,19 +300,8 @@
           $('#js-search-top').val($(this).val()); // <-- and here
       });
 
-      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-      let vh = window.innerHeight * 0.01;
-      // Then we set the value in the --vh custom property to the root of the document
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-      window.addEventListener('resize', () => {
-        // We execute the same script as before
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      });
-
-      $(window).on('resize', myfunction);
       $(document).ready(myfunction);
+      $(window).on('resize',myfunction);
 
       function myfunction() {
         if ( viewSize() == "xs" ) {
@@ -340,6 +323,7 @@
         } else {
           $("#map").height("100%");
         }
+
       }
 
       function viewSize() {
